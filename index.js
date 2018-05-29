@@ -1,5 +1,3 @@
 const app = require('./app')
 
-app.listen(3000, function () {
-    console.log('listening on port 3000');
-});
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
