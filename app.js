@@ -89,7 +89,7 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (received_message.attachment) {
         // Get the URL of the message attachment
-        let attachment_url = received_message.attachments[0].payload.url;
+        let attachment_url = received_message.attachment[0].payload.url;
         response = {
             "attachment": {
                 "type": "template",
@@ -151,7 +151,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "url": "https://graph.facebook.com/v2.6/me/messages?access_token=<PAGE_ACCESS_TOKEN>",
+        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=<PAGE_ACCESS_TOKEN>",
         "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
