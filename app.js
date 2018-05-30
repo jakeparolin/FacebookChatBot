@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require ('request');
-const  app = express();
+const app = express();
 
 // Takes token from Heroku.
 let VERIFY_TOKEN = process.env.TOKEN;
@@ -92,7 +92,7 @@ function callSendAPI(sender_psid, response) {
             if (!err) {
                 console.log('message sent!')
             } else {
-                console.log("Unable to send message:" + eer);
+                console.log("Unable to send message:" + err);
             }
          }
     );
