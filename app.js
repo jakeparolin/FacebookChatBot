@@ -95,7 +95,7 @@ function handleMessage(sender_psid, received_message) {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elemets": [{
+                    "elements": [{
                         "title": "Is this the right picture?",
                         "subtitle": "Tap a button to answer",
                         "image_url": attachment_url,
@@ -151,7 +151,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=<PAGE_ACCESS_TOKEN>",
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
         "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
