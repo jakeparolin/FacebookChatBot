@@ -9,8 +9,6 @@ const VERIFY_TOKEN = process.env.TOKEN;
 // Page Access Token
 const PAGE_ACCESS_TOKEN = process.env.PAGE_TOKEN
 
-
-
 app.use(bodyParser.json())
 
 // --Webhook--
@@ -78,7 +76,7 @@ app.post('/webhook', (req, res) => {
   
   });
 
-  // --Handler Functions--
+// --Handler Functions--
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
@@ -87,7 +85,7 @@ function handleMessage(sender_psid, received_message) {
     if (received_message.text) {
         //Create the payload for a basic text message
         response = {
-        "text": 'You sent the message: "${received_message.text}", Now send me an image!'
+        "text": `You sent the message: ${received_message.text}, Now send me an image!`
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
