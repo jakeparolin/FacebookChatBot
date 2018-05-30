@@ -13,7 +13,72 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_TOKEN
 
 app.use(bodyParser.json())
 
-// --Handler Functions--
+// --Webhook--
+
+// Adds support for GET requests to our webhook
+app.get('/webhook', (req, res) => {
+      
+    // Parse the query params
+    let mode = req.query['hub.mode'];
+    let token = req.query['hub.verify_token'];
+    let challenge = req.query['hub.challenge'];
+      
+    // Checks if a token and mode is in the query string of the request
+    if (mode && token) {
+    
+      // Checks the mode and token sent is correct
+      if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+        
+        // Responds with the challenge token from the request
+        console.log('WEBHOOK_VERIFIED');
+        res.status(200).send(challenge);
+      
+      } else {
+        // Responds with '403 Forbidden' if verify tokens do not match
+        res.sendStatus(403);      
+      }
+    }
+});
+
+app.post('/webhook', (req, res) => {  
+
+    // Parse the request body from the POST
+    let body = req.body;
+  
+    // Check the webhook event is from a Page subscription
+    if (body.object === 'page') {
+  
+      // Iterate over each entry - there may be multiple if batched
+      body.entry.forEach(function(entry) {
+  
+        // Gets the body of the webhook event
+        let webhook_event = entry.messaging[0];
+        console.log(webhook_event);
+
+        // Get the sender PSID
+        let sender_psid = webhook_event.sender.id;
+        console.log('Sender PSID: ' + sender_psid);
+
+        // Checks received event and passes event to respected handler function
+        if (webhook_event.message) {
+            handleMessage(sender_psid, webhook_event.message);        
+        } else if (webhook_event.postback) {
+            handlePostback(sender_psid, webhook_event.postback);
+        }
+        
+      });
+  
+      // Return a '200 OK' response to all events
+      res.status(200).send('EVENT_RECEIVED');
+  
+    } else {
+      // Return a '404 Not Found' if event is not from a page subscription
+      res.sendStatus(404);
+    }
+  
+  });
+
+  // --Handler Functions--
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
@@ -89,7 +154,7 @@ function callSendAPI(sender_psid, response) {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=<PAGE_ACCESS_TOKEN>",
-        "qs": { "access_token": VERIFY_TOKEN },
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -101,70 +166,5 @@ function callSendAPI(sender_psid, response) {
          }
     );
 }
-
-// --Webhook--
-
-app.post('/webhook', (req, res) => {  
-
-    // Parse the request body from the POST
-    let body = req.body;
-  
-    // Check the webhook event is from a Page subscription
-    if (body.object === 'page') {
-  
-      // Iterate over each entry - there may be multiple if batched
-      body.entry.forEach(function(entry) {
-  
-        // Gets the body of the webhook event
-        let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
-
-        // Get the sender PSID
-        let sender_psid = webhook_event.sender.id;
-        console.log('Sender PSID: ' + sender_psid);
-
-        // Checks received event and passes event to respected handler function
-        if (webhook_event.message) {
-            handleMessage(sender_psid, webhook_event.message);        
-        } else if (webhook_event.postback) {
-            handlePostback(sender_psid, webhook_event.postback);
-        }
-        
-      });
-  
-      // Return a '200 OK' response to all events
-      res.status(200).send('EVENT_RECEIVED');
-  
-    } else {
-      // Return a '404 Not Found' if event is not from a page subscription
-      res.sendStatus(404);
-    }
-  
-  });
-
-// Adds support for GET requests to our webhook
-app.get('/webhook', (req, res) => {
-      
-    // Parse the query params
-    let mode = req.query['hub.mode'];
-    let token = req.query['hub.verify_token'];
-    let challenge = req.query['hub.challenge'];
-      
-    // Checks if a token and mode is in the query string of the request
-    if (mode && token) {
-    
-      // Checks the mode and token sent is correct
-      if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        
-        // Responds with the challenge token from the request
-        console.log('WEBHOOK_VERIFIED');
-        res.status(200).send(challenge);
-      
-      } else {
-        // Responds with '403 Forbidden' if verify tokens do not match
-        res.sendStatus(403);      
-      }
-    }
-  });
 
 module.exports = app
