@@ -161,12 +161,9 @@ function userGreeting(sender_psid) {
     let response;
 
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid,
-        "qs": {
-            "access_token": PAGE_ACCESS_TOKEN,
-            "fields": "first_name"
-        },
-        method: "GET"
+        "uri": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid + "?fields=first_name",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "GET"
     }, (err, res, body) => {
         if (!err) {
             name = JSON.parse(body);
