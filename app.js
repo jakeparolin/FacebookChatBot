@@ -161,7 +161,7 @@ function userGreeting(sender_psid) {
     let response;
 
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/" + sender_psid,
+        "uri": "https://graph.facebook.com/v2.6/" + sender_psid,
         "qs": { 
             "access_token": PAGE_ACCESS_TOKEN,
             "fields": "first_name"
