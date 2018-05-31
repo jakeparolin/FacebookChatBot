@@ -152,11 +152,12 @@ function callSendAPI(sender_psid, response) {
 }
 
 function getUser(sender_psid) {
+    console.log("user id is: " + sender_psid)
     request({
         "url": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid,
         "qs": {
             "access_token": PAGE_ACCESS_TOKEN,
-            fields: "first_name"
+            "fields": "first_name"
         },
         method: "GET"
     }, function(err, resp, body) {
