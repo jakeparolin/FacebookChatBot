@@ -229,7 +229,7 @@ function getWeather(sender_psid) {
         },
         "method": "GET"
     }, (err, res, body) => {
-        if(!err) => {
+        if(!err) {
             temp = bodyObj.main.temp  // Degrees in fahrenheit
             humidity = bodyObj.main.humidity //Humidity
             high = bodyObj.main.temp_max //High temp for the day
