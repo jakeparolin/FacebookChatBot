@@ -79,7 +79,7 @@ function handleMessage(sender_psid, received_message) {
    
         switch(message) {
             case "joke":
-                response = {"text": "tells joke"}
+                randomJoke()
                 break;
             
             case "help":
@@ -166,7 +166,6 @@ function callSendAPI(sender_psid, response) {
 }
 
 function userGreeting(sender_psid) {
-    console.log("user id is: " + sender_psid)
     let name;
     let response;
 
@@ -181,12 +180,31 @@ function userGreeting(sender_psid) {
             if (!err) {
                 var bodyObj = JSON.parse(body);
                 name = bodyObj.first_name;
-                console.log("user's name: " + name );
                 response = { "text": `Hello, ${name}. I am Dolores`}
                 callSendAPI(sender_psid, response)
             } else {
                 console.log("Unable to get name:" + err)
             }
+    })
+}
+
+function randomJoke() {
+    request({
+        "url": "https://icanhazdadjoke.com/",
+        "headers": {
+            "User-Agent": "https://parolin-chatbot.herokuapp.com/",
+            "Accept": "application/json"
+        },
+        "method": "GET"
+    }, (err, res, body) => {
+        if(!err) {
+            var bodyObj = JSON.parse(body);
+            joke = bodyObj.joke;
+            response = {"text": `${joke}`}
+            callSendAPI (sender_psid, response)
+        } else {
+            console.log("Unable to get joke:" + err)
+        }
     })
 }
 
