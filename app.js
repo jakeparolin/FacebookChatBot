@@ -75,9 +75,19 @@ function handleMessage(sender_psid, received_message) {
     let response;
     //Check if the message contains text
     if (received_message.text) {
-        //Create the payload for a basic text message
-        response = {
-        "text": `You sent the message: ${received_message}, Now send me an Image!`
+        let message = received_message.text.toLowerCase().trim();
+   
+        switch(message) {
+            case "joke":
+                response = {"text": "tells joke"}
+                break;
+            
+            case "help":
+                response = {"text": "help"}
+                break;
+
+            default:
+                response = {"text": "I'm sorry, I'm still learning and don't quite understand. type 'help' for a list of my commands"}
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
