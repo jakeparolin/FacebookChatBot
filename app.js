@@ -117,13 +117,17 @@ function handleMessage(sender_psid, received_message) {
 function handlePostback(sender_psid, received_postback) {
     let response;
     let payload = received_postback.payload
-    let name = getUser(sender_psid)
 
-    if(payload === "Greeting") {
-        response = {"text": "Hello, " + name + ". I am Dolores"}
+    if(payload) {
+        switch (payload) {
+            case 'Greeting':
+                userGreeting(sender_psid)
+                break;
+            
+            default:
+                callSendAPI(sender_psid, response);
+        }
     }
-
-    callSendAPI(sender_psid, response)
 }
 
 // Sends response messages via the Send API
@@ -151,20 +155,24 @@ function callSendAPI(sender_psid, response) {
     );
 }
 
-function getUser(sender_psid) {
+function userGreeting(sender_psid) {
     console.log("user id is: " + sender_psid)
+    let name;
+    let response;
+
     request({
-        "url": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid,
+        "uri": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid,
         "qs": {
             "access_token": PAGE_ACCESS_TOKEN,
             "fields": "first_name"
         },
         method: "GET"
-    }, function(err, resp, body) {
+    }, (err, res, body) => {
         if (!err) {
-            var bodyObj = JSON.parse(body);
-            name = bodyObj.first_name;
-            console.log("user's name: " + name );
+            name = JSON.parse(body);
+            console.log("user's name: " + name.first_name );
+            response = { "text": `Hello, ${name.first_name}. I am Dolores`}
+            callSendAPI(sender_psid, response)
         } else {
             console.log("Unable to get name:" + err)
         }
