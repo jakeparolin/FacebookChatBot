@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 
-exports.userGreeting= function(sender_psid) {
+module.exports.userGreeting= function(sender_psid) {
     let name;
     let response;
 
@@ -26,7 +26,7 @@ exports.userGreeting= function(sender_psid) {
 }
 
 
-exports.randomJoke = function(sender_psid) {
+module.exports.randomJoke = function(sender_psid) {
     let joke;
     let response;
 
