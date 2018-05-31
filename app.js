@@ -83,6 +83,7 @@ function handleMessage(sender_psid, received_message) {
 
             case "weather": {
                 getWeather(sender_psid)
+                break;
             }
             
             case "help":
@@ -229,7 +230,7 @@ function getWeather(sender_psid) {
     }, (err, res, body) => {
         if(!err) {
             var bodyObj = JSON.parse(body)
-            
+
             temp = bodyObj.main.temp  // Degrees in fahrenheit
             humidity = bodyObj.main.humidity //Humidity
             high = bodyObj.main.temp_max //High temp for the day
@@ -237,9 +238,7 @@ function getWeather(sender_psid) {
             wind = bodyObj.wind.speed // Wind Speeds
             name = bodyObj.name
             
-            response = {"text": `Here is your weather update for ${name}. 
-                                The current temperature is ${temp} degrees with a high of ${high} and a low of ${low}.
-                                Humidty is at ${humidity}% with wind speeds at ${wind}mph`}
+            response = {"text": `Here is your weather update for ${name}. The current temperature is ${temp} degrees with a high of ${high} and a low of ${low}. Humidty is at ${humidity}% with wind speeds at ${wind}mph`}
             callSendAPI (sender_psid, response)
         } else {
             console.log("Unable to get weather:" +err)
