@@ -161,18 +161,22 @@ function userGreeting(sender_psid) {
     let response;
 
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid + "?fields=first_name",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "uri": "https://graph.facebook.com/v2.6/me/" + sender_psid,
+        "qs": { 
+            "access_token": PAGE_ACCESS_TOKEN,
+            "fields": "first_name"
+        },
         "method": "GET"
     }, (err, res, body) => {
-        if (!err) {
-            name = JSON.parse(body);
-            console.log("user's name: " + name.first_name );
-            response = { "text": `Hello, ${name.first_name}. I am Dolores`}
-            callSendAPI(sender_psid, response)
-        } else {
-            console.log("Unable to get name:" + err)
-        }
+            if (!err) {
+                var bodyObj = JSON.parse(body);
+                name = bodyObj.first_name;
+                console.log("user's name: " + name );
+                response = { "text": `Hello, ${name}. I am Dolores`}
+                callSendAPI(sender_psid, response)
+            } else {
+                console.log("Unable to get name:" + err)
+            }
     })
 }
 
