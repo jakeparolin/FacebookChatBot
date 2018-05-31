@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require ('request');
 const app = express();
+const functions = require('./functions.js');
 
 // Takes token from Heroku. CHANGE BACK FOR DEPLOYMENT
 const VERIFY_TOKEN = process.env.TOKEN;
@@ -79,8 +80,12 @@ function handleMessage(sender_psid, received_message) {
    
         switch(message) {
             case "joke":
-                randomJoke(sender_psid)
+                functions.randomJoke(sender_psid)
                 break;
+
+            case "weather": {
+                // getWeather(sender_psid)
+            }
             
             case "help":
                 response = {"text": "help"}
@@ -131,7 +136,7 @@ function handlePostback(sender_psid, received_postback) {
     if(payload) {
         switch (payload) {
             case 'Greeting':
-                userGreeting(sender_psid)
+                functions.userGreeting(sender_psid)
                 break;
             
             default:
@@ -163,49 +168,6 @@ function callSendAPI(sender_psid, response) {
             }
          }
     );
-}
-
-function userGreeting(sender_psid) {
-    let name;
-    let response;
-
-    request({
-        "uri": "https://graph.facebook.com/" + sender_psid,
-        "qs": { 
-            "access_token": PAGE_ACCESS_TOKEN,
-            "fields": "first_name"
-        },
-        "method": "GET"
-    }, (err, res, body) => {
-            if (!err) {
-                var bodyObj = JSON.parse(body);
-                name = bodyObj.first_name;
-                response = { "text": `Hello, ${name}. I am Dolores`}
-                callSendAPI(sender_psid, response)
-            } else {
-                console.log("Unable to get name:" + err)
-            }
-    })
-}
-
-function randomJoke(sender_psid) {
-    request({
-        "url": "https://icanhazdadjoke.com/",
-        "headers": {
-            "User-Agent": "https://parolin-chatbot.herokuapp.com/",
-            "Accept": "application/json"
-        },
-        "method": "GET"
-    }, (err, res, body) => {
-        if(!err) {
-            var bodyObj = JSON.parse(body);
-            joke = bodyObj.joke;
-            response = {"text": `${joke}`}
-            callSendAPI (sender_psid, response)
-        } else {
-            console.log("Unable to get joke:" + err)
-        }
-    })
 }
 
 module.exports = app
