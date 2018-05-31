@@ -8,8 +8,6 @@ const VERIFY_TOKEN = process.env.TOKEN;
 // Page Access Token
 const PAGE_ACCESS_TOKEN = process.env.PAGE_TOKEN
 
-var bodyObj = JSON.parse(body)
-
 app.use(bodyParser.json())
 
 // --Webhook--
@@ -230,6 +228,8 @@ function getWeather(sender_psid) {
         "method": "GET"
     }, (err, res, body) => {
         if(!err) {
+            var bodyObj = JSON.parse(body)
+            
             temp = bodyObj.main.temp  // Degrees in fahrenheit
             humidity = bodyObj.main.humidity //Humidity
             high = bodyObj.main.temp_max //High temp for the day
