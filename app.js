@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const request = require ('request');
 const app = express();
 
-// Takes token from Heroku.
+// Takes token from Heroku. CHANGE BACK FOR DEPLOYMENT
 const VERIFY_TOKEN = process.env.TOKEN;
 
 // Page Access Token
@@ -15,18 +15,14 @@ app.use(bodyParser.json())
 
 // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
-      
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
-      
     // Checks if a token and mode is in the query string of the request
     if (mode && token) {
-    
       // Checks the mode and token sent is correct
       if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        
         // Responds with the challenge token from the request
         console.log('WEBHOOK_VERIFIED');
         res.status(200).send(challenge);
@@ -45,18 +41,14 @@ app.post('/webhook', (req, res) => {
   
     // Check the webhook event is from a Page subscription
     if (body.object === 'page') {
-  
       // Iterate over each entry - there may be multiple if batched
       body.entry.forEach(function(entry) {
-  
         // Gets the body of the webhook event
         let webhook_event = entry.messaging[0];
         console.log(webhook_event);
-
         // Get the sender PSID
         let sender_psid = webhook_event.sender.id;
         console.log('Sender PSID: ' + sender_psid);
-
         // Checks received event and passes event to respected handler function
         if (webhook_event.message) {
             handleMessage(sender_psid, webhook_event.message);        
@@ -85,7 +77,7 @@ function handleMessage(sender_psid, received_message) {
     if (received_message.text) {
         //Create the payload for a basic text message
         response = {
-        "text": `You sent the message: ${received_message.text}, Now send me an image!`
+        "text": `You sent the message: ${received_message}, Now send me an Image!`
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
@@ -124,19 +116,14 @@ function handleMessage(sender_psid, received_message) {
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
     let response;
+    let payload = received_postback.payload
+    let name = getUser(sender_psid)
 
-    // Get the payload for the postback
-    let payload = received_postback.payload;
-
-    // Set the response based on the postback payload
-    if (payload === 'yes') {
-        response = { "text": "Thanks!" } 
-    } else if (payload === 'no') {
-        response = { "text": "Oops, try sending another image." }
+    if(payload === "Greeting") {
+        response = {"text": "Hello, " + name + "I am Dolores"}
     }
 
-    //Send the message to acknowledge the postback
-    callSendAPI(sender_psid, response);
+    callSendAPI(sender_psid, response)
 }
 
 // Sends response messages via the Send API
@@ -148,7 +135,6 @@ function callSendAPI(sender_psid, response) {
         },
         "message": response
     }
-
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v2.6/me/messages",
@@ -159,10 +145,29 @@ function callSendAPI(sender_psid, response) {
             if (!err) {
                 console.log('message sent!')
             } else {
-                console.log("Unable to send message:" + eer);
+                console.log("Unable to send message:" + err);
             }
          }
     );
+}
+
+function getUser(sender_psid) {
+    request({
+        "url": "https://graph.facebook.com/v2.6/me/messenger_profile",
+        "qs": {
+            access_token: process.env.PAGE_ACCESS_TOKEN,
+            fields: "first_name"
+        },
+        method: "GET"
+    }, function(err, resp, body) {
+        if (!err) {
+            var bodyObj = JSON.parse(body);
+            name = bodyObj.first_name;
+            console.log("user's name: " + name );
+        } else {
+            console.log("Unable to get name:" + err)
+        }
+    })
 }
 
 module.exports = app
