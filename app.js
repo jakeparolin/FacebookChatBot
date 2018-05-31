@@ -5,9 +5,10 @@ const app = express();
 
 // Takes token from Heroku. CHANGE BACK FOR DEPLOYMENT
 const VERIFY_TOKEN = process.env.TOKEN;
-
 // Page Access Token
 const PAGE_ACCESS_TOKEN = process.env.PAGE_TOKEN
+
+var bodyObj = JSON.parse(body)
 
 app.use(bodyParser.json())
 
@@ -83,7 +84,7 @@ function handleMessage(sender_psid, received_message) {
                 break;
 
             case "weather": {
-                getWeather()
+                getWeather(sender_psid)
             }
             
             case "help":
@@ -193,8 +194,8 @@ function userGreeting(sender_psid) {
 }
 
 function randomJoke(sender_psid) {
-    let joke;
     let response;
+    let joke;
 
     request({
         "url": "https://icanhazdadjoke.com/",
@@ -211,6 +212,37 @@ function randomJoke(sender_psid) {
             callSendAPI (sender_psid, response)
         } else {
             console.log("Unable to get joke:" + err)
+        }
+    })
+}
+
+function getWeather(sender_psid) {
+    let response;
+    let temp;
+
+    request({
+        "url": "http://api.openweathermap.org/data/2.5/weather",
+        "qs": {
+            "id": "5391811",
+            "units": "imperial",
+            "appid": process.env.WEATHER
+        },
+        "method": "GET"
+    }, (err, res, body) => {
+        if(!err, res, body) => {
+            temp = bodyObj.main.temp  // Degrees in fahrenheit
+            humidity = bodyObj.main.humidity //Humidity
+            high = bodyObj.main.temp_max //High temp for the day
+            low = bodyObj.main.temp_min // Low for the day
+            wind = bodyObj.wind.speed // Wind Speeds
+            name = bodyObj.name
+            
+            response = {"text": `Here is your weather update for ${name}. 
+                                The current temperature is ${temp} degrees with a high of ${high} and a low of ${low}.
+                                Humidty is at ${humidity}% with wind speeds at ${wind}mph`}
+            callSendAPI (sender_psid, response)
+        } else {
+            console.log("Unable to get weather:" +err)
         }
     })
 }
