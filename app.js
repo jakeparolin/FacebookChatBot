@@ -79,7 +79,7 @@ function handleMessage(sender_psid, received_message) {
    
         switch(message) {
             case "joke":
-                randomJoke()
+                randomJoke(sender_psid)
                 break;
             
             case "help":
@@ -188,7 +188,7 @@ function userGreeting(sender_psid) {
     })
 }
 
-function randomJoke() {
+function randomJoke(sender_psid) {
     request({
         "url": "https://icanhazdadjoke.com/",
         "headers": {
