@@ -120,7 +120,7 @@ function handlePostback(sender_psid, received_postback) {
     let name = getUser(sender_psid)
 
     if(payload === "Greeting") {
-        response = {"text": "Hello, " + name + "I am Dolores"}
+        response = {"text": "Hello, " + name + ". I am Dolores"}
     }
 
     callSendAPI(sender_psid, response)
@@ -153,9 +153,9 @@ function callSendAPI(sender_psid, response) {
 
 function getUser(sender_psid) {
     request({
-        "url": "https://graph.facebook.com/v2.6/me/messenger_profile",
+        "url": "https://graph.facebook.com/v2.6/me/messenger_profile" + sender_psid,
         "qs": {
-            access_token: process.env.PAGE_ACCESS_TOKEN,
+            "access_token": PAGE_ACCESS_TOKEN,
             fields: "first_name"
         },
         method: "GET"
