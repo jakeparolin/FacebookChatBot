@@ -210,6 +210,7 @@ function getJoke(sender_psid) {
         "method": "GET"
     }, (err, res, body) => {
         if(!err) {
+            console.log("body:" + body)
             var bodyObj = JSON.parse(body);
             joke = bodyObj.joke;
             response = {"text": `${joke}`}
