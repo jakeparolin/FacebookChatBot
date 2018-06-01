@@ -198,7 +198,7 @@ function userGreeting(sender_psid) {
             if (!err) {
                 var bodyObj = JSON.parse(body);
                 name = bodyObj.first_name;
-                response = { "text": `Hello, ${name}. I am Dolores`}
+                response = { "text": `Hello, ${name}. I am Dolores. Type 'help' for a list of commands`}
                 callSendAPI(sender_psid, response)
             } else {
                 console.log("Unable to get name:" + err)
