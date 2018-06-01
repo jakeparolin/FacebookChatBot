@@ -266,6 +266,7 @@ function getQuote(sender_psid) {
         "method": "GET"
     }, (err, res, body) => {
         if(!err) {
+            console.log("body: " + body)
             var bodyObj = JSON.parse(body)
 
             quote = bodyObj.quote
