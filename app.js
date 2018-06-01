@@ -123,10 +123,6 @@ function handleMessage(sender_psid, received_message) {
                                         "title": "Check out my image",
                                         "subtitle": "Sent using Dolores Bot",
                                         "image_url": attachment_url,
-                                        "default_action": {
-                                          "type": "web_url",
-                                          "url": "http://m.me/petershats?ref=invited_by_24601"
-                                        },
                                         "buttons": []
                                       }
                                     ]
