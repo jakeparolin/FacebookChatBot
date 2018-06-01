@@ -102,7 +102,53 @@ function handleMessage(sender_psid, received_message) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
-            "text": "nice image"
+            "message":{
+                "attachment":{
+                  "type":"template",
+                  "payload":{
+                    "template_type":"generic",
+                    "elements":[
+                      {
+                        "title":"Breaking News: Record Thunderstorms",
+                        "subtitle":"The local area is due for record thunderstorms over the weekend.",
+                        "image_url":"https://thechangreport.com/img/lightning.png",
+                        "buttons": [
+                          {
+                            "type": "element_share",
+                            "share_contents": { 
+                              "attachment": {
+                                "type": "template",
+                                "payload": {
+                                  "template_type": "generic",
+                                  "elements": [
+                                    {
+                                      "title": "I took the hat quiz",
+                                      "subtitle": "My result: Fez",
+                                      "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
+                                      "default_action": {
+                                        "type": "web_url",
+                                        "url": "http://m.me/petershats?ref=invited_by_24601"
+                                      },
+                                      "buttons": [
+                                        {
+                                          "type": "web_url",
+                                          "url": "http://m.me/petershats?ref=invited_by_24601", 
+                                          "title": "Take Quiz"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
         }
     }
 
