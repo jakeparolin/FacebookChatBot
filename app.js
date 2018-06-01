@@ -273,7 +273,7 @@ function getQuote(sender_psid) {
             author = bodyObj.author
             console.log("quote:" + quote)
             
-            response = {"text": `${body}`}
+            response = {"text": `${body.quote}`}
             callSendAPI(sender_psid, response)
         }
     })
