@@ -78,11 +78,16 @@ function handleMessage(sender_psid, received_message) {
    
         switch(message) {
             case "joke":
-                randomJoke(sender_psid)
+                getJoke(sender_psid)
                 break;
 
             case "weather": {
                 getWeather(sender_psid)
+                break;
+            }
+
+            case "quote": {
+                getQuote(sender_psid)
                 break;
             }
             
@@ -192,7 +197,7 @@ function userGreeting(sender_psid) {
     })
 }
 
-function randomJoke(sender_psid) {
+function getJoke(sender_psid) {
     let response;
     let joke;
 
@@ -217,7 +222,6 @@ function randomJoke(sender_psid) {
 
 function getWeather(sender_psid) {
     let response;
-    let temp;
 
     request({
         "url": "http://api.openweathermap.org/data/2.5/weather",
@@ -242,6 +246,33 @@ function getWeather(sender_psid) {
             callSendAPI (sender_psid, response)
         } else {
             console.log("Unable to get weather:" +err)
+        }
+    })
+}
+
+function getQuote(sender_psid) {
+    let response;
+
+    request({
+        "url": "GEThttps://andruxnet-random-famous-quotes.p.mashape.com/",
+        "qs": {
+            "cat": "famous",
+            "count": "1"
+        },
+        "headers": {
+            "X-Mashap-Key": process.env.QUOTE,
+            "Accept": "application/json"
+        },
+        "method": "GET"
+    }, (err, res, body) => {
+        if(!err) {
+            var bodyObj = JSON.parse(body)
+
+            quote = bodyObj.quote
+            author = bodyObj.author
+            
+            response = {"text": `"${quote}" - ${author}`}
+            callSendAPI(sender_psid, response)
         }
     })
 }
