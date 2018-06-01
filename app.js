@@ -260,7 +260,7 @@ function getQuote(sender_psid) {
             "count": "1"
         },
         "headers": {
-            "X-Mashap-Key": process.env.QUOTE,
+            "X-Mashape-Key": process.env.QUOTE,
             "Accept": "application/json"
         },
         "method": "GET"
