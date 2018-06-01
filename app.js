@@ -102,45 +102,7 @@ function handleMessage(sender_psid, received_message) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Your Image",
-                            "subtitle": "Share this image?",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "element_share",
-                                    "share_contents": {
-                                        "attachment": {
-                                            "type": "template",
-                                            "payload": {
-                                                "template_type": "generic",
-                                                "elements": [
-                                                    {
-                                                        "Title": "Check out my picture!",
-                                                        "image_url": attachment_url,
-                                                        "buttons":[
-                                                            {
-                                                            "type": "web_url",
-                                                            "url": attachment_url,
-                                                            "title": "My image"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        }                                    
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
+            "text": "nice image"
         }
     }
 
