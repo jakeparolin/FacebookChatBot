@@ -121,15 +121,14 @@ function handleMessage(sender_psid, received_message) {
                                             "elements": [
                                                 {
                                                     "Title": "Check out my picture!",
-                                                    "image_url": attachment_url
-                                                },
-                                            "buttons":[
-                                                {
-                                                    "type": "web_url",
-                                                    "url": attachment_url,
-                                                    "title": "My image"
-                                                }
-                                            ]
+                                                    "image_url": attachment_url,
+                                                "buttons":[
+                                                    {
+                                                        "type": "web_url",
+                                                        "url": attachment_url,
+                                                        "title": "My image"
+                                                    }
+                                                ]
                                             ]
                                         }
                                     }                                    
