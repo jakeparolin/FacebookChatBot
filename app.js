@@ -107,19 +107,26 @@ function handleMessage(sender_psid, received_message) {
                 "payload": {
                     "template_type": "generic",
                     "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer",
+                        "title": "Your Image",
+                        "subtitle": "Share this image?",
                         "image_url": attachment_url,
                         "buttons": [
                             {
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
+                                "type": "element_share",
+                                "share_contents": {
+                                    "attachment": {
+                                        "type": "template",
+                                        "payload": {
+                                            "template_type": "generic",
+                                            "elements": [
+                                                {
+                                                    "Title": "Check out my picture!",
+                                                    "image_url": attachment_url
+                                                }
+                                            ]
+                                        }
+                                    }                                    
+                                }
                             }
                         ],
                     }]
@@ -272,24 +279,7 @@ function getQuote(sender_psid) {
             quote = bodyObj.quote
             author = bodyObj.author
             
-            response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": `${quote} -${author}`,
-                            "subtitle": "Share this quote with a friend?",
-                            "buttons": [
-                                {
-                                    "type": "element_share",
-                                    "share_contents": `${quote} -${author}`
-                                },
-                            ],
-                        }]
-                    }
-                }
-            }
+            response = {"text": `${quote} -${author}`}
             callSendAPI(sender_psid, response)
         }
     })
