@@ -267,15 +267,12 @@ function getQuote(sender_psid) {
         "method": "GET"
     }, (err, res, body) => {
         if(!err) {
-            console.log("body: " + body)
             var bodyObj = JSON.parse(body)[0]
-            console.log("bodyobj:" + bodyObj)
 
             quote = bodyObj.quote
             author = bodyObj.author
-            console.log("quote:" + quote)
             
-            response = {"text": `${quote}`}
+            response = {"text": `${quote} -${author}`}
             callSendAPI(sender_psid, response)
         }
     })
