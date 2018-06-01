@@ -254,7 +254,7 @@ function getQuote(sender_psid) {
     let response;
 
     request({
-        "url": "https://andruxnet-random-famous-quotes.p.mashape.com/",
+        "url": "https://andruxnet-random-famous-quotes.p.mashape.com",
         "qs": {
             "cat": "famous",
             "count": "1"
