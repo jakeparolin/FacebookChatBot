@@ -272,7 +272,25 @@ function getQuote(sender_psid) {
             quote = bodyObj.quote
             author = bodyObj.author
             
-            response = {"text": `${quote} -${author}`}
+            response = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": `${quote} -${author}`,
+                            "subtitle": "Share this quote with a friend?",
+                            "image_url": attachment_url,
+                            "buttons": [
+                                {
+                                    "type": "element_share",
+                                    "share_contents": `${quote} -${author}`
+                                },
+                            ],
+                        }]
+                    }
+                }
+            }
             callSendAPI(sender_psid, response)
         }
     })
