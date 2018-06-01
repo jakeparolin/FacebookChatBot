@@ -43,7 +43,6 @@ app.post('/webhook', (req, res) => {
       body.entry.forEach(function(entry) {
         // Gets the body of the webhook event
         let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
         // Get the sender PSID
         let sender_psid = webhook_event.sender.id;
         // Checks received event and passes event to respected handler function
@@ -97,8 +96,9 @@ function handleMessage(sender_psid, received_message) {
                 response = {"text": "I'm sorry, I'm still learning and don't quite understand. type 'help' for a list of my commands"}
         }
     } else if (received_message.attachments) {
-        // Get the URL of the message attachment
+        // Get the URL of the message attachment 
         let attachment_url = received_message.attachments[0].payload.url;
+        // Takes user uploaded image and ask if they want to share with a friend
         response = {
             "attachment": {
                 "type": "template",
@@ -181,6 +181,7 @@ function callSendAPI(sender_psid, response) {
     );
 }
 
+// gets User's name and sends personalized greeting
 function userGreeting(sender_psid) {
     let name;
     let response;
@@ -204,6 +205,7 @@ function userGreeting(sender_psid) {
     })
 }
 
+//gets jokes from icanhazdadjoke API
 function getJoke(sender_psid) {
     let response;
     let joke;
@@ -217,7 +219,6 @@ function getJoke(sender_psid) {
         "method": "GET"
     }, (err, res, body) => {
         if(!err) {
-            console.log("body:" + body)
             var bodyObj = JSON.parse(body);
             joke = bodyObj.joke;
             response = {"text": `${joke}`}
@@ -227,7 +228,7 @@ function getJoke(sender_psid) {
         }
     })
 }
-
+// Gets weather updates from Open Weather Map api
 function getWeather(sender_psid) {
     let response;
 
@@ -258,6 +259,7 @@ function getWeather(sender_psid) {
     })
 }
 
+// gets random famous quotes from andruxnet api
 function getQuote(sender_psid) {
     let response;
 
