@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const request = require ('request');
 const app = express();
 
-// Takes token from Heroku. CHANGE BACK FOR DEPLOYMENT
+// Takes token from Heroku.
 const VERIFY_TOKEN = process.env.TOKEN;
 // Page Access Token
 const PAGE_ACCESS_TOKEN = process.env.PAGE_TOKEN
@@ -23,7 +23,6 @@ app.get('/webhook', (req, res) => {
       // Checks the mode and token sent is correct
       if (mode === 'subscribe' && token === VERIFY_TOKEN) {
         // Responds with the challenge token from the request
-        console.log('WEBHOOK_VERIFIED');
         res.status(200).send(challenge);
       
       } else {
@@ -47,7 +46,6 @@ app.post('/webhook', (req, res) => {
         console.log(webhook_event);
         // Get the sender PSID
         let sender_psid = webhook_event.sender.id;
-        console.log('Sender PSID: ' + sender_psid);
         // Checks received event and passes event to respected handler function
         if (webhook_event.message) {
             handleMessage(sender_psid, webhook_event.message);        
@@ -201,7 +199,7 @@ function userGreeting(sender_psid) {
                 response = { "text": `Hello, ${name}. I am Dolores. Type 'help' for a list of commands`}
                 callSendAPI(sender_psid, response)
             } else {
-                console.log("Unable to get name:" + err)
+                throw new Error(`Unable to get name: ${err}`)
             }
     })
 }
@@ -225,7 +223,7 @@ function getJoke(sender_psid) {
             response = {"text": `${joke}`}
             callSendAPI (sender_psid, response)
         } else {
-            console.log("Unable to get joke:" + err)
+             throw new Error(`Unable to get joke: ${err}`)
         }
     })
 }
@@ -255,7 +253,7 @@ function getWeather(sender_psid) {
             response = {"text": `Here is your weather update for ${name}. The current temperature is ${temp} degrees with a high of ${high} and a low of ${low}. Humidty is at ${humidity}% with wind speeds at ${wind}mph`}
             callSendAPI (sender_psid, response)
         } else {
-            console.log("Unable to get weather:" +err)
+            throw new Error(`Unable to get weather: ${err}`)
         }
     })
 }
