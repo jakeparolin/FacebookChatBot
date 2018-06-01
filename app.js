@@ -106,36 +106,39 @@ function handleMessage(sender_psid, received_message) {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elements": [{
-                        "title": "Your Image",
-                        "subtitle": "Share this image?",
-                        "image_url": attachment_url,
-                        "buttons": [
-                            {
-                                "type": "element_share",
-                                "share_contents": {
-                                    "attachment": {
-                                        "type": "template",
-                                        "payload": {
-                                            "template_type": "generic",
-                                            "elements": [
-                                                {
-                                                    "Title": "Check out my picture!",
-                                                    "image_url": attachment_url,
-                                                "buttons":[
+                    "elements": [
+                        {
+                            "title": "Your Image",
+                            "subtitle": "Share this image?",
+                            "image_url": attachment_url,
+                            "buttons": [
+                                {
+                                    "type": "element_share",
+                                    "share_contents": {
+                                        "attachment": {
+                                            "type": "template",
+                                            "payload": {
+                                                "template_type": "generic",
+                                                "elements": [
                                                     {
-                                                        "type": "web_url",
-                                                        "url": attachment_url,
-                                                        "title": "My image"
+                                                        "Title": "Check out my picture!",
+                                                        "image_url": attachment_url,
+                                                        "buttons":[
+                                                            {
+                                                            "type": "web_url",
+                                                            "url": attachment_url,
+                                                            "title": "My image"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
-                                            ]
-                                        }
-                                    }                                    
+                                            }
+                                        }                                    
+                                    }
                                 }
-                            }
-                        ],
-                    }]
+                            ]
+                        }
+                    ]
                 }
             }
         }
