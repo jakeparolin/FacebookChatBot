@@ -120,20 +120,14 @@ function handleMessage(sender_psid, received_message) {
                                     "template_type": "generic",
                                     "elements": [
                                       {
-                                        "title": "I took the hat quiz",
-                                        "subtitle": "My result: Fez",
-                                        "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
+                                        "title": "Check out my image",
+                                        "subtitle": "Sent using Dolores Bot",
+                                        "image_url": attachment_url,
                                         "default_action": {
                                           "type": "web_url",
                                           "url": "http://m.me/petershats?ref=invited_by_24601"
                                         },
-                                        "buttons": [
-                                          {
-                                            "type": "web_url",
-                                            "url": "http://m.me/petershats?ref=invited_by_24601", 
-                                            "title": "Take Quiz"
-                                          }
-                                        ]
+                                        "buttons": []
                                       }
                                     ]
                                   }
