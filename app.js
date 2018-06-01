@@ -280,7 +280,6 @@ function getQuote(sender_psid) {
                         "elements": [{
                             "title": `${quote} -${author}`,
                             "subtitle": "Share this quote with a friend?",
-                            "image_url": attachment_url,
                             "buttons": [
                                 {
                                     "type": "element_share",
