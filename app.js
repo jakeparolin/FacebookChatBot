@@ -108,20 +108,39 @@ function handleMessage(sender_psid, received_message) {
                     "template_type": "generic",
                     "elements": [{
                         "title": "Share this picture?",
-                        "subtitle": "Tap a button to answer",
+                        "subtitle": "Tap share",
                         "image_url": attachment_url,
                         "buttons": [
                             {
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
+                              "type": "element_share",
+                              "share_contents": { 
+                                "attachment": {
+                                  "type": "template",
+                                  "payload": {
+                                    "template_type": "generic",
+                                    "elements": [
+                                      {
+                                        "title": "I took the hat quiz",
+                                        "subtitle": "My result: Fez",
+                                        "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
+                                        "default_action": {
+                                          "type": "web_url",
+                                          "url": "http://m.me/petershats?ref=invited_by_24601"
+                                        },
+                                        "buttons": [
+                                          {
+                                            "type": "web_url",
+                                            "url": "http://m.me/petershats?ref=invited_by_24601", 
+                                            "title": "Take Quiz"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
                             }
-                        ],
+                          ]
                     }]
                 }
             }
