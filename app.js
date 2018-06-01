@@ -92,7 +92,7 @@ function handleMessage(sender_psid, received_message) {
             }
             
             case "help":
-                response = {"text": "help"}
+                response = {"text": "Here's a list of my commands: type 'joke' and I will send you something funny. type 'weather' and I will update you with the current weather. Type 'quote' for a random quote from someone famous!"}
                 break;
 
             default:
